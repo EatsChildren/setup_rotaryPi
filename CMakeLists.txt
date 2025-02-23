@@ -38,7 +38,8 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb3")
 ## Collect all C/CPP/CC Files for Compiling and define INCLUDES   ##
 ####################################################################
 file(GLOB_RECURSE PROJECT_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/*.c" )
-list(REMOVE_ITEM PROJECT_SRC_FILES "src/main.cpp" "src/main.c" "src/*/main.cpp" "src/*/main.c" "src/*/*/main.cpp" "src/*/*/*/main.c" )
+list(REMOVE_ITEM PROJECT_SRC_FILES  "src/main_blink_led.c"
+"src/main_count_pulses.c"  )
 SET(PROJECT_INCLUDE_DIRS "include")
 file(GLOB_RECURSE TMP LIST_DIRECTORIES true RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include/* )
 FOREACH(child ${TMP})
@@ -103,8 +104,11 @@ endif()
 ##############################
 ## Make Project Executibles ##
 ##############################
-add_executable(run_project src/main.c)
-target_link_libraries(run_project ${PROJECT_LIBS})
+add_executable(run_blink src/main_blink_led.c)
+add_executable(run_count src/main_count_pulses.c)
+
+target_link_libraries(run_blink ${PROJECT_LIBS})
+target_link_libraries(run_count ${PROJECT_LIBS})
 
 
 
