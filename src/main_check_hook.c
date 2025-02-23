@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
         {
             printf("your phone is off the hook \n");
         }
-        printf("...\n");
   
     }
 
