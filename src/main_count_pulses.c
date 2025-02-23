@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     unsigned int delay = 100;
     
     bcm2835_gpio_set(HOT);  //turn the header on!!
-    while (count < 1000)
+    while (1)
     {
         uint8_t state = bcm2835_gpio_lev( FLAG );
         //~ printf("state of flag is %d\n", state);
@@ -76,8 +76,7 @@ int main(int argc, char *argv[])
             uint8_t num = CountPulses();
             printf("number of pulses: %d\n", num);
         }
-        bcm2835_delay(delay);
-        count++;
+  
     }
     bcm2835_gpio_clr(HOT);
     return 0;
