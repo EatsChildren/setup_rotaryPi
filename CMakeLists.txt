@@ -41,7 +41,8 @@ file(GLOB_RECURSE PROJECT_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} "${PROJECT_SO
 list(REMOVE_ITEM PROJECT_SRC_FILES  "src/main_blink_led.c"
 "src/main_count_pulses.c"
 "src/main_clear_pins.c"
-"src/main_check_hook.c"  )
+"src/main_check_hook.c"
+ "src/main_run_phone.c" )
 SET(PROJECT_INCLUDE_DIRS "include")
 file(GLOB_RECURSE TMP LIST_DIRECTORIES true RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include/* )
 FOREACH(child ${TMP})
@@ -110,11 +111,14 @@ add_executable(run_blink src/main_blink_led.c)
 add_executable(run_count src/main_count_pulses.c)
 add_executable(run_clear src/main_clear_pins.c)
 add_executable(run_hook src/main_check_hook.c)
+add_executable(run_phone src/main_run_phone.c)
 
 target_link_libraries(run_blink ${PROJECT_LIBS})
 target_link_libraries(run_count ${PROJECT_LIBS})
 target_link_libraries(run_clear ${PROJECT_LIBS})
 target_link_libraries(run_hook ${PROJECT_LIBS})
+target_link_libraries(run_phone ${PROJECT_LIBS})
+
 
 
 
