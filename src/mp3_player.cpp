@@ -62,7 +62,7 @@ void MP3_Player::playSong(const std::string &phone_number)
     }
     std::unique_lock<std::recursive_mutex>(_mutex);
     _running = true;
-    _song_loop = std::thread(playLoop, phone_number);
+    _song_loop = std::thread(&MP3_Player::playLoop, this, phone_number);
 }
 
 void MP3_Player::stopCurrentSong()
