@@ -39,12 +39,11 @@ public:
     uint8_t getHook();
     uint8_t getDialingFlag();
     uint8_t countPulses();
-    std::vector<uint8_t> getDigits();
+    bool getDigits(std::vector<uint8_t>& nums);
     std::string getPhoneNumber(std::vector<uint8_t> counts);
     void initializeGPIO();
 
 private:
-    bool _dialing_error;  //if true will play err message via mp3 player until hook goes high
     std::atomic<bool> _running;
     uint8_t _hook;
     uint8_t _flag;

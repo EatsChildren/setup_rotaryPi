@@ -2,7 +2,7 @@
 
 Rotary_Phone::Rotary_Phone()
 {
-    _dialing_error = false;
+
     _hook = 1;
     _flag = 0;
     _running = false;
@@ -69,18 +69,50 @@ uint8_t Rotary_Phone::getDialingFlag()
     return _flag;
 }
 
-std::vector<uint8_t> Rotary_Phone::getDigits()
+bool Rotary_Phone::getDigits(std::vector<uint8_t> &nums)
 {
+    bool ret = false;
     int num_count = 0;
-    std::vector<uint8_t> nums;
+    auto start = std::chrono::high_resolution_clock::now();
     while (num_count < 3)
     {
+        auto end = std::chrono::high_resolution_clock::now();
         if (!_flag)
         {
             nums.push_back(this->countPulses());
             num_count++;
+            start = std::chrono::high_resolution_clock::now();
+        }
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        if (duration.count() > 10000)
+        {
+            break;
         }
     }
+
+    if (num_count == 3)
+    {
+        ret = true;
+    }
+    return ret;
+}
+
+std::string Rotary_Phone::getPhoneNumber(std::vector<uint8_t> counts)
+{
+    try
+    {
+        if (counts.size() != 3)
+        {
+            throw -1;
+        }
+    }
+    catch (int e)
+    {
+        std::cout << "Exception Caught: Size of phone number must be 3 " << e;
+    }
+
+    std::string s = std::to_string(static_cast<int>(counts[0])) + std::to_string(static_cast<int>(counts[1])) + std::to_string(static_cast<int>(counts[2]));
+    return s;
 }
 
 uint8_t Rotary_Phone::countPulses()
