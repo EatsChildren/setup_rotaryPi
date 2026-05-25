@@ -42,7 +42,8 @@ list(REMOVE_ITEM PROJECT_SRC_FILES  "src/main_blink_led.c"
 "src/main_count_pulses.c"
 "src/main_clear_pins.c"
 "src/main_check_hook.c"
- "src/main_run_phone.c" )
+ "src/main_run_phone.c"
+ "src/main.cpp" )
 SET(PROJECT_INCLUDE_DIRS "include")
 file(GLOB_RECURSE TMP LIST_DIRECTORIES true RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include/* )
 FOREACH(child ${TMP})
@@ -112,34 +113,14 @@ add_executable(run_count src/main_count_pulses.c)
 add_executable(run_clear src/main_clear_pins.c)
 add_executable(run_hook src/main_check_hook.c)
 add_executable(run_phone src/main_run_phone.c)
+add_executable(run_main src/main.cpp)
 
 target_link_libraries(run_blink ${PROJECT_LIBS})
 target_link_libraries(run_count ${PROJECT_LIBS})
 target_link_libraries(run_clear ${PROJECT_LIBS})
 target_link_libraries(run_hook ${PROJECT_LIBS})
 target_link_libraries(run_phone ${PROJECT_LIBS})
+target_link_libraries(run_main ${PROJECT_LIBS})
 
 
-
-
-################
-## Add TESTS  ##
-################
-# file(GLOB_RECURSE TEST_SRC_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp" "${PROJECT_SOURCE_DIR}/test/*.c" )
-# find_package(GTest REQUIRED)
-# enable_testing()
-
-# add_executable( run_all_tests
-#   ${TEST_SRC_FILES}
-# )
-
-# target_link_libraries(
-#     run_all_tests
-#     ${PROJECT_LIBS}
-#     gtest
-#     gtest_main
-# )
-
-# include(GoogleTest)
-# gtest_discover_tests(run_all_tests)
 

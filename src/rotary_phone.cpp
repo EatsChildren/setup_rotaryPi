@@ -111,7 +111,7 @@ std::string Rotary_Phone::getPhoneNumber(std::vector<uint8_t> counts)
         std::cout << "Exception Caught: Size of phone number must be 3 " << e;
     }
 
-    std::string s = std::to_string(static_cast<int>(counts[0])) + std::to_string(static_cast<int>(counts[1])) + std::to_string(static_cast<int>(counts[2]));
+    std::string s = std::to_string(static_cast<int>(counts[0])) + std::to_string(static_cast<int>(counts[1])) + std::to_string(static_cast<int>(counts[2])) + ".mp3";
     return s;
 }
 
