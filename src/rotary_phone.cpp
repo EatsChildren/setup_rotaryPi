@@ -159,6 +159,7 @@ uint8_t Rotary_Phone::countPulses()
     {
         count = 0;
     }
+    std::cout<<"number of pulses: "<<static_cast<int>(count)<<std::endl;
     return count;
 }
 
@@ -174,6 +175,7 @@ void Rotary_Phone::rx_loop()
         {
             std::unique_lock<std::recursive_mutex> lock(_mutex);
             _hook = bcm2835_gpio_lev(HOOK);
+            // std::cout<<"_hook: "<<static_cast<int>(_hook)<<std::endl;
             _flag = bcm2835_gpio_lev(FLAG);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(_ms_delay));

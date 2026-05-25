@@ -31,7 +31,7 @@ private:
     std::atomic<bool> _running;
     std::string _path; // file path to folder where songs are stored
     ma_engine _engine;
-    ma_sound _sound;
+    // ma_sound _sound;
     std::thread _song_loop;
     int _ms_delay;
 
