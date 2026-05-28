@@ -5,9 +5,9 @@ Rotary_Phone::Rotary_Phone()
 
     _hook = 1;
     _flag = 0;
-    _running = false;
+    _running.store(false);
     _ms_delay = 10;
-    _bcm_counter_delay = 10;
+    _bcm_counter_delay = 5;
     this->initializeGPIO();
 }
 
@@ -43,7 +43,7 @@ void Rotary_Phone::initializeGPIO()
 
 void Rotary_Phone::closeRX()
 {
-    _running = false;
+    _running.store(false);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     if (_rx_thread.joinable())
     {
@@ -53,7 +53,7 @@ void Rotary_Phone::closeRX()
 
 void Rotary_Phone::startRX()
 {
-    _running = true;
+    _running.store(true);
     _rx_thread = std::thread(&Rotary_Phone::rx_loop, this);
 }
 
@@ -77,7 +77,7 @@ bool Rotary_Phone::getDigits(std::vector<uint8_t> &nums)
     while (num_count < 3)
     {
         auto end = std::chrono::high_resolution_clock::now();
-        if (!_flag)
+        if (_flag)
         {
             nums.push_back(this->countPulses());
             num_count++;
@@ -170,7 +170,7 @@ uint8_t Rotary_Phone::countPulses()
 void Rotary_Phone::rx_loop()
 {
 
-    while (_running)
+    while (_running.load())
     {
         {
             std::unique_lock<std::recursive_mutex> lock(_mutex);

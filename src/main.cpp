@@ -22,8 +22,8 @@ int main(){
             }
 
             if(flag){  //dialing has begun
-                // std::cout<<"not flag!!!"<<std::endl;
                 player->stopCurrentSong();
+                 //std::cout<<"not flag!!!"<<std::endl;
                 std::vector<uint8_t> digits;
                 bool pulse_ok = phone->getDigits(digits);
                 if(pulse_ok){
@@ -38,6 +38,7 @@ int main(){
             player->stopCurrentSong();
         }
         last_hook = hook;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     return 0;
 }

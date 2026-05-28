@@ -3,13 +3,14 @@
 MP3_Player::MP3_Player(const std::string &path) : _path(path)
 {
     this->initializePlayer();
-    _running = false;
-    _ms_delay = 50;
+    _running.store(false);
+    _ms_delay = 100;
 }
 
 MP3_Player::~MP3_Player()
 {
     this->safeShutdown();
+     ma_engine_uninit(&_engine);
 }
 
 void MP3_Player::initializePlayer()
@@ -29,7 +30,7 @@ void MP3_Player::initializePlayer()
 
 void MP3_Player::safeShutdown()
 {
-    _running = false;
+    _running.store(false);
     if (_song_loop.joinable())
     {
         _song_loop.join();
@@ -38,10 +39,10 @@ void MP3_Player::safeShutdown()
 
 void MP3_Player::playLoop(const std::string &phone_number)
 {
-    std::cout<<"in the function:"<<std::endl;
-    ma_sound sound;
+    ma_result result;
+    ma_sound _sound;
+  
     std::string full_path = _path + phone_number;
-    // std::cout<<"full path: "<<full_path<<std::endl;
     
     if (ma_sound_init_from_file(
             &_engine,
@@ -49,21 +50,21 @@ void MP3_Player::playLoop(const std::string &phone_number)
             0,
             NULL,
             NULL,
-            &sound) != MA_SUCCESS)
+            &_sound) != MA_SUCCESS)
     {
         std::cout << "Failed to load sound\n";
         return;
     }
-    ma_sound_start(&sound);
-    // std::cout<<"running: "<<_running<<std::endl;
+    ma_sound_start(&_sound);
 
-    while (_running)
+    while (_running.load())
     {
         // std::cout<<"in the loop: "<<std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(_ms_delay));
+       
     }
-    ma_sound_stop(&sound);
-    ma_sound_uninit(&sound);
+    ma_sound_stop(&_sound);
+    ma_sound_uninit(&_sound);
 }
 
 void MP3_Player::playSong(const std::string &phone_number)
@@ -77,14 +78,15 @@ void MP3_Player::playSong(const std::string &phone_number)
     }
     
 
-    _running = true;
+    _running.store(true);
     _song_loop = std::thread(&MP3_Player::playLoop, this, phone_number);
 }
 
 void MP3_Player::stopCurrentSong()
 {
     std::unique_lock<std::recursive_mutex> lock(_mutex);
-    _running = false;
+   _running.store(false);
+   
 }
 
 void MP3_Player::playDialTone()
