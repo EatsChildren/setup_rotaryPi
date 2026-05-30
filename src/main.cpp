@@ -23,12 +23,11 @@ int main(){
 
             if(flag){  //dialing has begun
                 player->stopCurrentSong();
-                 //std::cout<<"not flag!!!"<<std::endl;
                 std::vector<uint8_t> digits;
                 bool pulse_ok = phone->getDigits(digits);
                 if(pulse_ok){
                     std::string phone_number = phone->getPhoneNumber(digits);
-                    std::cout<<"phone number: "<<phone_number<<std::endl;
+                    //std::cout<<"phone number: "<<phone_number<<std::endl;
                     player->playSong(phone_number);
                 }else{
                     player->playErrorMessage();

@@ -1,6 +1,5 @@
 #ifndef MP3_PLAYER_H
 #define MP3_PLAYER_H
-#define MINIAUDIO_IMPLEMENTATION
 
 #include <memory>
 #include <string>
@@ -9,7 +8,11 @@
 #include <iostream>
 #include <chrono>
 #include <mutex>
+#include <stdlib.h> // Required for setenv()
+#include <random>
 #include "miniaudio.h"
+#include <vector>
+
 
 class MP3_Player
 {
@@ -19,7 +22,7 @@ public:
     static Ptr create(const std::string &path) { return std::make_shared<MP3_Player>(path); }
     MP3_Player(const std::string &path);
     ~MP3_Player();
-    void playSong(const std::string& phone_number);
+    void playSong(std::string& phone_number);
     void stopCurrentSong();
     void playDialTone();
     void playErrorMessage();
@@ -31,11 +34,15 @@ private:
     std::atomic<bool> _running;
     std::string _path; // file path to folder where songs are stored
     ma_engine _engine;
+    ma_context _context;
     //ma_sound _sound;
     std::thread _song_loop;
     int _ms_delay;
 
-    void playLoop(const std::string &phone_number);
+    void playLoop(std::string phone_number);
+    void playRandom();
+    std::string randomPhoneNumber();
+    
 };
 
 #endif

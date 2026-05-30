@@ -159,7 +159,7 @@ uint8_t Rotary_Phone::countPulses()
     {
         count = 0;
     }
-    std::cout<<"number of pulses: "<<static_cast<int>(count)<<std::endl;
+    //std::cout<<"number of pulses: "<<static_cast<int>(count)<<std::endl;
     return count;
 }
 
